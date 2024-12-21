@@ -106,14 +106,22 @@ fun CameraScreen() {
         //  Choose your inference time threshold
         val inferenceTimeThreshold = 200000
 
+        Log.i("inference time", "value: " + detectionResults.value!!.inferenceTime)
         if (detectionResults.value!!.inferenceTime > inferenceTimeThreshold) {
-            Log.d("CS330", "GPU too slow, switching to CPU start")
             // TODO:
             //  Create new classifier to be run on CPU with 2 threads
+            val personClassifierCPU = PersonClassifier()
+            personClassifierCPU.initialize(context, 2, useGPU = false)
+
+            personClassifierCPU.setDetectorListener(listener)
 
             // TODO:
             //  Set imageAnalyzer to use the new classifier
-
+            imageAnalyzer.setAnalyzer(cameraExecutor) { image ->
+                detectObjects(image, personClassifierCPU)
+                // Close the image proxy
+                image.close()
+            }
             Log.d("CS330", "GPU too slow, switching to CPU done")
         }
     }
