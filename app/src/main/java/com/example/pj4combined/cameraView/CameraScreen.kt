@@ -104,7 +104,7 @@ fun CameraScreen() {
     if (detectionResults.value != null) {
         // TODO:
         //  Choose your inference time threshold
-        val inferenceTimeThreshold = 200000
+        val inferenceTimeThreshold = 200
 
         Log.i("inference time", "value: " + detectionResults.value!!.inferenceTime)
         if (detectionResults.value!!.inferenceTime > inferenceTimeThreshold) {
